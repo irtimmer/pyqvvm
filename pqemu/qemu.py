@@ -1,5 +1,6 @@
 import yaml
 import subprocess
+import importlib
 
 ROOT_OPTION = {
   'device': 'driver',
@@ -11,6 +12,10 @@ class Qemu:
     cfg = yaml.load(open(file))
     self.config = cfg['config']
     self.qemu = cfg['qemu']
+    self.plugins = []
+    for key in cfg['plugins']:
+      plugin = importlib.import_module('plugins.' + key).getInstance(cfg['plugins'][key])
+      self.plugins.append(plugin)
 
   def _option(self, key, value):
     return key if value == None else '%s=%s' % (key, value)
@@ -42,5 +47,12 @@ class Qemu:
     cmd.extend(self.get_arguments())
     print(' '.join(cmd))
 
-    process = subprocess.Popen(cmd)
-    process.wait()
+    try:
+      for plugin in self.plugins:
+        plugin.startup()
+
+      process = subprocess.Popen(cmd)
+      process.wait()
+    finally:
+      for plugin in self.plugins:
+        plugin.destroy()
