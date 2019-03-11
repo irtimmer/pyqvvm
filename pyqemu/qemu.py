@@ -15,6 +15,7 @@ class Qemu:
     self.config = cfg['config']
     self.qemu = cfg['qemu']
     self.plugins = []
+    self.fds = []
     for key in cfg['plugins']:
       plugin = importlib.import_module('plugins.' + key).getInstance(cfg['plugins'][key])
       self.plugins.append(plugin)
@@ -46,6 +47,9 @@ class Qemu:
 
     return args
 
+  def register_fd(self, fd):
+    self.fds.append(fd)
+
   def run(self):
     cmd = ['/usr/bin/qemu-system-%s'%(self.qemu['system'])]
     cmd.extend(self.get_arguments())
@@ -55,7 +59,7 @@ class Qemu:
       for plugin in self.plugins:
         plugin.startup(self)
 
-      process = subprocess.Popen(cmd)
+      process = subprocess.Popen(cmd, pass_fds=self.fds)
       process.wait()
     finally:
       for plugin in self.plugins:
