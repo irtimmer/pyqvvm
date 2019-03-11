@@ -53,7 +53,7 @@ class Qemu:
 
     try:
       for plugin in self.plugins:
-        plugin.startup()
+        plugin.startup(self)
 
       process = subprocess.Popen(cmd)
       process.wait()
