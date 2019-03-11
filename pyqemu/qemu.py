@@ -24,7 +24,7 @@ class Qemu:
 
   def _enc_option(self, key, options):
     if isinstance(options, dict):
-      root_option = ROOT_OPTION[key] if key in ROOT_OPTION else 'value'
+      root_option = ROOT_OPTION[key] if key in ROOT_OPTION else '_value'
       args = [self._option(k, v) for (k, v) in options.items() if k != root_option]
       if root_option in options:
         args.insert(0, options[root_option])
