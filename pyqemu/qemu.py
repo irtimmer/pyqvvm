@@ -30,6 +30,8 @@ class Qemu:
         args.insert(0, options[root_option])
 
       return ['-' + key, ','.join(args) ]
+    elif options == None:
+      return ['-' + key]
     else:
       return ['-' + key, str(options)]
 
