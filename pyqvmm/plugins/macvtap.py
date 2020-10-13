@@ -20,6 +20,9 @@ class Macvtap:
 
       qemu.register_fd(fd);
 
+  def started(self, qemu):
+    pass
+
   def destroy(self):
     for network in self.networks:
       subprocess.call(['ip', 'link', 'del', 'dev', network['name']])

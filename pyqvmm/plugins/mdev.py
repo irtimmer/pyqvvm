@@ -9,6 +9,9 @@ class Mdev:
       with open('/sys/bus/pci/devices/%s/mdev_supported_types/%s/create'%(device['addr'], device['type']), 'w') as f:
         f.write(device['uuid'])
 
+  def started(self, qemu):
+    pass
+
   def destroy(self):
     for device in self.devices:
       with open('/sys/bus/pci/devices/%s/%s/remove'%(device['addr'], device['uuid']), 'w') as f:

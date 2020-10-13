@@ -60,6 +60,9 @@ class Qemu:
         plugin.startup(self)
 
       process = subprocess.Popen(cmd, pass_fds=self.fds)
+      for plugin in self.plugins:
+        plugin.started(self)
+
       process.wait()
     finally:
       for plugin in self.plugins:

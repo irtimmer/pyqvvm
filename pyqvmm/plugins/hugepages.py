@@ -14,6 +14,9 @@ class Hugepages:
     with open('/proc/sys/vm/nr_hugepages', 'w') as f:
       f.write(str(size + self.options['pages']))
 
+  def started(self, qemu):
+    pass
+
   def destroy(self):
     size = 0
     with open('/proc/sys/vm/nr_hugepages', 'r') as f:

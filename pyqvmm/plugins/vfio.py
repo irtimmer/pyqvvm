@@ -21,6 +21,9 @@ class Vfio:
           with open('/sys/bus/pci/drivers/vfio-pci/new_id', 'w') as f:
             f.write(conf['PCI_ID'].replace(':', ' '))
 
+  def started(self, qemu):
+    pass
+
   def destroy(self):
     for device in self.devices:
       if device['rebind']:
